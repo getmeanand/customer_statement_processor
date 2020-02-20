@@ -6,11 +6,15 @@ There are two validations:
   
 # Steps to Run
  1. Clone the project
- 2. Import it into your favourite IDE
+ 2. Import it into your Spring Tools(STS) IDE
+ 3. Open Application.properties file under src/mail/resources 
+		i. Set your default port number
+	   ii. Set file.location=/Users/454424/Desktop/customer_files (customer statement files location)
+	  iii. file.processed= /Users/454424/Desktop/customer_files/processed (customer statement files to be moved once validated) 
  3. Build the project.
  4. Run the project.
- 5. Hit the URL : http://localhost:8181/csvFileValidator
-                : http://localhost:8181/xmlFileValidator
- 6. file-validator starts processing user data(xml,csv file from class path), and validates it. finally will display both the transaction     reference and description of each of the failed records as response
+ 5. Hit the URL : http://localhost:8181/processCustomerFiles          
+ 6. customer_statements_processor starts validating the user files (xml,csv file from the mentioned path in properties file), and process it. 
+	finally we will get a responce that the failured records. We can fetch it and dissplay the required fields in the UI.
   
   
