@@ -1,4 +1,4 @@
-# file-validator deal with the customer datas and validates user input as below
+# customer_statement_processor deals with the customer data's and validate it as below:
 There are two validations:
   1. All transaction references should be unique
   2. The end balance needs to be validated as Euro
