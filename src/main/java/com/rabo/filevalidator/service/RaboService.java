@@ -25,9 +25,9 @@ import com.rabo.filevalidator.utils.RaboUtils;
 @Service
 public class RaboService {
 
-	@Autowired
-	RaboUtils raboUtils;
-
+	/*
+	 * @Autowired RaboUtils raboUtils;
+	 */
 	@Autowired
 	private FileOperationsFactory fileFactory;
 
@@ -42,12 +42,12 @@ public class RaboService {
 			if (fileType.equalsIgnoreCase(RaboConstants.CSV)) {
 				filteredCustomerList.addAll(loadAndProcessCSVFile(customerFile));
 				RaboUtils.moveFilesToProcesedFolder(customerFile.getAbsolutePath(),
-						raboUtils.fileProcessedStorageLocation + "\\" + customerFile.getName());
+						RaboUtils.fileProcessedStorageLocation + "\\" + customerFile.getName());
 
 			} else {
 				filteredCustomerList.addAll(loadAndProcessXMLFile(customerFile));
 				RaboUtils.moveFilesToProcesedFolder(customerFile.getAbsolutePath(),
-						raboUtils.fileProcessedStorageLocation + "\\" + customerFile.getName());
+						RaboUtils.fileProcessedStorageLocation + "\\" + customerFile.getName());
 			}
 
 		});
@@ -73,7 +73,7 @@ public class RaboService {
 	public List<File> loadAllFilesFromPath() {
 		List<File> filesInPhysicalPathList;
 		try {
-			filesInPhysicalPathList = Files.walk(raboUtils.fileStorageLocation).filter(Files::isRegularFile)
+			filesInPhysicalPathList = Files.walk(RaboUtils.fileStorageLocation).filter(Files::isRegularFile)
 					.map(Path::toFile).collect(Collectors.toList());
 		} catch (IOException e) {
 			logger.error("Error Reading file from the storagelocation::" + e.getMessage());

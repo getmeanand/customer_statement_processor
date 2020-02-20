@@ -28,8 +28,8 @@ public class RaboUtils {
 	@Autowired
 	RaboService raboService;
 
-	public Path fileStorageLocation;
-	public Path fileProcessedStorageLocation;
+	public static Path fileStorageLocation;
+	public static Path fileProcessedStorageLocation;
 
 	@Autowired
 	public RaboUtils(FileStorageProperties fileStorageProperties, FileStorageProperties fileProcedssedStorageLocation)
