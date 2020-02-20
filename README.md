@@ -20,7 +20,7 @@ There are two validations:
  11. Finally we will get a responce about the failured records. We can fetch it and dissplay the required fields in the UI.
   
   
-  Note : while importng the project, there should not be a space in the directory for better unit testing and code coverage
+  Note : while importng the project, there should not be a space in the directory.
 Eg: 
 
 D:\Rabo Bank\Workspace\ ===>instead of this, we can create as below
