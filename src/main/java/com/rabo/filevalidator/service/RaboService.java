@@ -31,7 +31,7 @@ public class RaboService {
 	@Autowired
 	private FileOperationsFactory fileFactory;
 
-	public List<Record> processAndValidateCustomerFiles() throws CustomerFileNotFoundException {
+	public List<Record> processAndValidateCustomerFiles() throws CustomerFileNotFoundException, IOException {
 
 		List<Record> filteredCustomerList = new ArrayList<Record>();
 
@@ -70,15 +70,15 @@ public class RaboService {
 
 	}
 
-	public List<File> loadAllFilesFromPath() {
+	public List<File> loadAllFilesFromPath() throws IOException {
 		List<File> filesInPhysicalPathList;
-		try {
+		
 			filesInPhysicalPathList = Files.walk(RaboUtils.fileStorageLocation).filter(Files::isRegularFile)
 					.map(Path::toFile).collect(Collectors.toList());
-		} catch (IOException e) {
-			logger.error("Error Reading file from the storagelocation::" + e.getMessage());
-			throw new CustomerFileNotFoundException();
-		}
+			if (filesInPhysicalPathList.isEmpty()) {
+				throw new CustomerFileNotFoundException();
+			}
+		
 		return filesInPhysicalPathList;
 	}
 
