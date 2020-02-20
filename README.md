@@ -7,10 +7,10 @@ There are two validations:
 # Steps to Run
  1. Clone the project
  2. Import it into your Spring Tools(STS) IDE
- 3. Open Application.properties file under src/mail/resources 
-	1. Set your default port number
-        2. Set file.location=/Users/454424/Desktop/customer_files (customer statement files location)
-      	3. file.processed= /Users/454424/Desktop/customer_files/processed (customer statement files to be moved once validated) 
+ 3. Open application.properties file under src/mail/resources 
+	1.Set your default port number
+        2.Set file.location=/Users/454424/Desktop/customer_files (customer statement files location)
+      	3.Set file.processed=/Users/454424/Desktop/customer_files/processed (customer statement files to be moved once validated) 
  3. Build the project.
  4. Run the project.
  5. Hit the URL : http://localhost:8181/processCustomerFiles          
