@@ -39,6 +39,7 @@ public class CSVFile extends FileOperations {
 			}
 
 		} catch (IOException e) {
+			logger.error("Error in Read Customer file::" + e.getMessage());
 		}
 
 		return customerDataList;
