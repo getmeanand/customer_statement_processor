@@ -9,7 +9,11 @@ There are two validations:
  2. Import it into your Spring Tools(STS) IDE and configure Java8 in Build path, and finally maven
  3. Open application.properties file under "src/main/resources",
  4. Set your default port number
+ 
 # Create Default Folder for custommer files and create another folder(processed) under the default folder as per below steps.
+	create folder like "/Users/454424/Desktop/customer_files"  --> we should place all csv and xml customer files here
+	another folder like "/Users/454424/Desktop/customer_files/processed" --> after system validates records, files are moved here
+	
  5. Set file.location=/Users/454424/Desktop/customer_files (mention customer statement files location)
  6. Set file.processed=/Users/454424/Desktop/customer_files/processed (customer statement files to be moved once validated) 
  7. Build the project.
