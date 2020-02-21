@@ -3,17 +3,27 @@ package com.rabo.filevalidator.files;
 import java.util.List;
 
 import com.rabo.filevalidator.constants.RaboConstants;
-import com.rabo.filevalidator.dto.Record;
+import com.rabo.filevalidator.dto.RaboCustomerAccounts;
 import com.rabo.filevalidator.utils.RaboUtils;
 
-public class CSVParser extends FileParser {
+/**
+ * @author Anandha
+ *
+ */
+public class RaboCSVParser extends RaboFileParser {
 
+	/**
+	 * this function parse the customer data and parse it
+	 * 
+	 * @param customerData
+	 * @return RaboCustomerAccounts
+	 */
 	@Override
-	public Record parseCustomerInformation(String data) {
+	public RaboCustomerAccounts parseCustomerInformation(final String customerData) {
 
-		Record record = null;
+		RaboCustomerAccounts record = null;
 
-		String[] strCustomerDetails = data.split(RaboConstants.COMMA_DELIMITER);
+		String[] strCustomerDetails = customerData.split(RaboConstants.COMMA_DELIMITER);
 		if (strCustomerDetails != null) {
 			record = parseSplitedValues(strCustomerDetails);
 		}
@@ -22,18 +32,29 @@ public class CSVParser extends FileParser {
 
 	}
 
+	/**
+	 * validateCustomerDataList accepts the list of customer data list and start
+	 * validating. finally return the failure customer list
+	 * 
+	 * @param customerDataList
+	 * @return List<RaboCustomerAccounts>
+	 */
 	@Override
-	public List<Record> validateCustomerDataList(List<Record> customerFileList) {
-		return RaboUtils.validateCustomerRecords(customerFileList);
+	public List<RaboCustomerAccounts> validateCustomerDataList(List<RaboCustomerAccounts> customerDataList) {
+		return RaboUtils.validateCustomerRecords(customerDataList);
 
 	}
 
-	public Record parseSplitedValues(String[] splitRecDetails) {
-		Record record = null;
+	/** Spliting the customer datas based on the "," delimitor
+	 * @param splitRecDetails
+	 * @return
+	 */
+	public RaboCustomerAccounts parseSplitedValues(String[] splitRecDetails) {
+		RaboCustomerAccounts record = null;
 		if (!nullCheck(splitRecDetails)) {
 			int index = RaboConstants.INT_VAL_ZERO;
 			if (splitRecDetails != null) {
-				record = new Record();
+				record = new RaboCustomerAccounts();
 				record.setReference(splitRecDetails[index++]);
 				record.setAccountNumber(splitRecDetails[index++]);
 				record.setDescription(splitRecDetails[index++]);

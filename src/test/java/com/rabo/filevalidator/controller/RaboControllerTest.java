@@ -1,10 +1,10 @@
 package com.rabo.filevalidator.controller;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,17 +12,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.util.StringUtils;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.rabo.filevalidator.dto.Record;
+import com.rabo.filevalidator.dto.RaboCustomerAccounts;
+import com.rabo.filevalidator.service.RaboFileProperties;
 import com.rabo.filevalidator.service.RaboService;
 
 @WebMvcTest(RaboController.class)
@@ -34,29 +37,36 @@ public class RaboControllerTest {
 
 	@MockBean
 	private RaboService raboService;
-	
 
-	List<Record> records;
+	Path fileStorageLocation;
+
+	List<RaboCustomerAccounts> records;
+	String strCustomerFile = new String("records.xml");
+
+	@MockBean
+	RaboFileProperties raboFileProperties;
 
 	@Before
 	public void setUp() {
 		records = new ArrayList();
-		Record record = new Record();
+		RaboCustomerAccounts record = new RaboCustomerAccounts();
 		record.setStartBalance(100);
 		record.setMutation(50);
 		record.setEndBalance(50);
 		records.add(record);
-		
 
 	}
 
 	@Test
 	public void testWithCSVFileContent() throws Exception {
 		when(raboService.processAndValidateCustomerFiles()).thenReturn(records);
-		
-		ResultActions resultActions = mockMvc.perform(get("/processCustomerFiles").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print());
-		MvcResult result = resultActions.andReturn();
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
+						.contentType(MediaType.MULTIPART_FORM_DATA))
+				.andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
+
 		String contentAsString = result.getResponse().getContentAsString();
 
 		Assert.assertNotNull(contentAsString);
@@ -64,15 +74,45 @@ public class RaboControllerTest {
 
 	@Test
 	public void testWithXMLFileContent() throws Exception {
-		when(raboService.processAndValidateCustomerFiles()).thenReturn(null);
-		ResultActions resultActions = mockMvc.perform(get("/processCustomerFiles").contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isConflict()).andDo(print());
-		MvcResult result = resultActions.andReturn();
+		when(raboService.processAndValidateCustomerFiles()).thenReturn(records);
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.xml");
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "records.xml", "multipart/form-data", is);
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
+						.contentType(MediaType.MULTIPART_FORM_DATA))
+				.andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
+
 		String contentAsString = result.getResponse().getContentAsString();
 
-		Assert.assertNotNull(StringUtils.isEmpty(contentAsString));
+		Assert.assertNotNull(contentAsString);
+	}
+
+	@Test
+	public void testStoreCustomerFiles() throws Exception {
+		when(raboService.processAndValidateCustomerFiles()).thenReturn(records);
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
+
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
+						.contentType(MediaType.MULTIPART_FORM_DATA))
+				.andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
+
 	}
 	
+	@Test
+	public void testStoreCustomerFilesService() throws Exception {
 	
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
+
+		when(raboService.storeCustomerFiles(Mockito.any())).thenReturn(strCustomerFile);
+		
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
+						.contentType(MediaType.MULTIPART_FORM_DATA))
+				.andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
+
+	}
 
 }

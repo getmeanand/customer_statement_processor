@@ -11,14 +11,15 @@ There are two validations:
  4. Set your default port number
  
 # Create Default Folder for custommer files and create another folder(processed) under the default folder as per below steps.
-	create folder like "/Users/454424/Desktop/customer_files"  --> we should place all csv and xml customer files here
-	another folder like "/Users/454424/Desktop/customer_files/processed" --> after system validates records, files are moved here
+	create folder like "/Users/454424/Desktop/customer_files"  --> to store customer input files(csv and xml) and start processing 
+	another folder like "/Users/454424/Desktop/customer_files/processed" --> once the system processed customer input files, we are moving files here 
+	for future references.
 	
- 5. Set file.location=/Users/454424/Desktop/customer_files (mention customer statement files location)
+ 5. Set file.location=/Users/454424/Desktop/customer_files 
  6. Set file.processed=/Users/454424/Desktop/customer_files/processed (customer statement files to be moved once validated) 
  7. Build the project.
  8. Run the project.
- 9. Hit the URL : http://localhost:8181/processCustomerFiles          
+ 9. Hit the URL : POST :  http://localhost:8181/uploadCustomerFiles         
  10. customer_statements_processor starts validating the user files(xml,csv file from the mentioned path in properties file),and 
      process it. 
  11. Finally we will get a responce about the failured records. We can fetch it and dissplay the required fields in the UI.
@@ -33,3 +34,11 @@ D:\Rabo-Bank\Workspace\
 
 we can create dir by adding undersccore(_) or hyphen(-) for the spaces 
   
+  
+PostMan Configuration:
+1. Remove "Content-Type" from header tab.
+2. navigate to Body tab and selet option "form-data"
+3. add key as "files" and value as "File".
+4. Chooose the customer input files and hit the url
+
+

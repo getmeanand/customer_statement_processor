@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="record")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Record {
+public class RaboCustomerAccounts {
 	@XmlAttribute(name="reference")
 	private String reference;
 	private String accountNumber;

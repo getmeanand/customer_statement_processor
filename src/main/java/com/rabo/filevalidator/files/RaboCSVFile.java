@@ -14,25 +14,38 @@ import org.springframework.stereotype.Component;
 
 import com.rabo.filevalidator.constants.RaboConstants;
 import com.rabo.filevalidator.controller.RaboController;
-import com.rabo.filevalidator.dto.Record;
-import com.rabo.filevalidator.operations.FileOperations;
+import com.rabo.filevalidator.dto.RaboCustomerAccounts;
+import com.rabo.filevalidator.exceptions.RaboFileNotFoundException;
+import com.rabo.filevalidator.operations.RaboFileOperations;
 
+/**
+ * @author Anandha
+ *
+ */
 @Component
-public class CSVFile extends FileOperations {
+public class RaboCSVFile extends RaboFileOperations {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RaboController.class);
 
-	private List<Record> customerDataList = null;
+	private List<RaboCustomerAccounts> customerDataList = null;
 
+	/**
+	 * This readCustomerValidatorFile() reads the customer statement files from the
+	 * path and start validating it. finally it will return the list of failure
+	 * records
+	 * 
+	 * @param csvFile
+	 * @return
+	 */
 	@Override
-	public List<Record> readCustomerValidatorFile(File csvFile) {
-		CSVParser csvParser = new CSVParser();
+	public List<RaboCustomerAccounts> readCustomerValidatorFile(File csvFile) {
+		RaboCSVParser csvParser = new RaboCSVParser();
 		File inputF = new File(csvFile.toString());
 
 		try (InputStream inputFS = new FileInputStream(inputF);
 				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
 
-			List<Record> csvFileInformationList = br.lines().skip(1).map(csvParser::parseCustomerInformation)
-					.collect(Collectors.toList());
+			List<RaboCustomerAccounts> csvFileInformationList = br.lines().skip(1)
+					.map(csvParser::parseCustomerInformation).collect(Collectors.toList());
 
 			if (csvFileInformationList != null && csvFileInformationList.size() != RaboConstants.INT_VAL_ZERO) {
 				customerDataList = csvParser.validateCustomerDataList(csvFileInformationList);

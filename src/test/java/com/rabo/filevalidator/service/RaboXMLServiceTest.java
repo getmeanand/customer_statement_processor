@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -18,20 +17,17 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.rabo.filevalidator.dto.RaboCustomerAccounts;
 import com.rabo.filevalidator.enums.FILE_TYPE;
-import com.rabo.filevalidator.exceptions.RaboCustomerFileSaveException;
 import com.rabo.filevalidator.exceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.files.RaboCSVFile;
+import com.rabo.filevalidator.files.RaboXMLFile;
 import com.rabo.filevalidator.operations.RaboFileOperationsFactory;
 import com.rabo.filevalidator.utils.RaboUtils;
 
 @RunWith(SpringRunner.class)
-public class RaboServiceTest {
+public class RaboXMLServiceTest {
 
 	@MockBean
 	private RaboFileOperationsFactory fileFactory;
@@ -44,7 +40,7 @@ public class RaboServiceTest {
 
 	@Before
 	public void setUp() {
-		raboUtils.fileStorageLocation = Paths.get(loadFilesForValidate("records.csv").getAbsolutePath())
+		raboUtils.fileStorageLocation = Paths.get(loadFilesForValidate("records.xml").getAbsolutePath())
 				.toAbsolutePath().normalize();
 		raboUtils.fileProcessedStorageLocation = Paths.get(loadFilesForValidate("").getAbsolutePath()).toAbsolutePath()
 				.normalize();
@@ -52,25 +48,32 @@ public class RaboServiceTest {
 	}
 
 	@Test
-	public void testLoadAndProcessCSVFile() throws RaboFileNotFoundException, IOException {
+	public void testProcessXMLFile() throws RaboFileNotFoundException, IOException {
 
-		when(fileFactory.getFileInstance(FILE_TYPE.CSV)).thenReturn(new RaboCSVFile());
+		when(fileFactory.getFileInstance(FILE_TYPE.XML)).thenReturn(new RaboXMLFile());
 
 		List<RaboCustomerAccounts> actualRecords = raboServiceTest.processAndValidateCustomerFiles();
 
 		Assert.assertNotNull(actualRecords);
 
-		verify(fileFactory, times(1)).getFileInstance(FILE_TYPE.CSV);
+		verify(fileFactory, times(1)).getFileInstance(FILE_TYPE.XML);
 	}
 
-	@Test(expected = RaboCustomerFileSaveException.class)
-	public void testStoreCustomerFiles() throws RaboFileNotFoundException, IOException {
+	@Test
+	public void testLoadAndProcessXMLFile() throws RaboFileNotFoundException {
+		when(fileFactory.getFileInstance(FILE_TYPE.XML)).thenReturn(new RaboXMLFile());
+		List<RaboCustomerAccounts> actualRecords = raboServiceTest
+				.loadAndProcessXMLFile(loadFilesForValidate("records.xml"));
 
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
+		Assert.assertNotNull(actualRecords);
 
-		raboServiceTest.storeCustomerFiles(mockMultipartFile);
+		verify(fileFactory, times(1)).getFileInstance(FILE_TYPE.XML);
+	}
 
+	@Test(expected = RaboFileNotFoundException.class)
+	public void testLoadAndProcessException() throws RaboFileNotFoundException {
+		when(fileFactory.getFileInstance(FILE_TYPE.XML)).thenReturn(new RaboXMLFile());
+		raboServiceTest.loadAndProcessXMLFile(loadFilesForValidate("records1.xml"));
 	}
 
 	public File loadFilesForValidate(String paramFileName) {

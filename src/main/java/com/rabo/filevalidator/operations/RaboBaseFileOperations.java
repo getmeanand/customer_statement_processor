@@ -4,13 +4,13 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.rabo.filevalidator.enums.FILE_TYPE;
-import com.rabo.filevalidator.files.CSVFile;
-import com.rabo.filevalidator.files.XMLFile;
+import com.rabo.filevalidator.files.RaboCSVFile;
+import com.rabo.filevalidator.files.RaboXMLFile;
 
-public abstract class BaseFileOperations {
+public abstract class RaboBaseFileOperations {
 	protected Map<FILE_TYPE, Object> fileMapObject;
 
-	public BaseFileOperations() {
+	public RaboBaseFileOperations() {
 		super();
 		initiateFileTypeMap();
 	}
@@ -18,8 +18,8 @@ public abstract class BaseFileOperations {
 	private void initiateFileTypeMap() {
 		fileMapObject = new EnumMap<FILE_TYPE, Object>(FILE_TYPE.class);
 
-		fileMapObject.put(FILE_TYPE.XML, new XMLFile());
-		fileMapObject.put(FILE_TYPE.CSV, new CSVFile());
+		fileMapObject.put(FILE_TYPE.XML, new RaboXMLFile());
+		fileMapObject.put(FILE_TYPE.CSV, new RaboCSVFile());
 
 	}
 

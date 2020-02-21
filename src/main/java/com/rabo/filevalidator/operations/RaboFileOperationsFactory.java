@@ -4,8 +4,12 @@ import org.springframework.stereotype.Component;
 
 import com.rabo.filevalidator.enums.FILE_TYPE;
 
+/**
+ * @author 454424
+ *
+ */
 @Component
-public class FileOperationsFactory extends BaseFileOperations {
+public class RaboFileOperationsFactory extends RaboBaseFileOperations {
 	/**
 	 * this function accepts the customer input file types ie xml or csv and return
 	 * the corresponding instances accordingly from the fileMapObject. this is the

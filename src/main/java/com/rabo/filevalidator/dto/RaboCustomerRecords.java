@@ -9,12 +9,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="records")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Records {
+public class RaboCustomerRecords {
 	
 	@XmlElement(name="record")
-	private List<Record> record = null;
+	private List<RaboCustomerAccounts> record = null;
 
-	public List<Record> getRecord() {
+	public List<RaboCustomerAccounts> getRecord() {
 		return record;
 	}
 
