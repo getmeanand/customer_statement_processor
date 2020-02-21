@@ -34,8 +34,8 @@ we can create dir by adding undersccore(_) or hyphen(-) for the spaces
   
 # PostMan Configuration for select Customer input file(s)
 1. Remove "Content-Type" from header tab.
-2. navigate to Body tab and selet option "form-data"
-3. add key as "files" and value as "File".
-4. Chooose the customer input files and hit the url
-
+2. Navigate to Body tab and selet option "form-data"
+3. Add key as "files" and value as "File".
+4. Chooose the customer input files and hit the below url
+	POST :  http://localhost:8181/uploadCustomerFiles    
 
