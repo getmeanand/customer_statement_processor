@@ -12,8 +12,7 @@ There are two validations:
  
 # Create Default Folder for custommer files and create another folder(processed) under the default folder as per below steps.
 	create folder like "/Users/454424/Desktop/customer_files"  --> to store customer input files(csv and xml) and start processing 
-	another folder like "/Users/454424/Desktop/customer_files/processed" --> once the system processed customer input files, we are moving files here 
-	for future references.
+	another folder like "/Users/454424/Desktop/customer_files/processed" --> once the system processed customer input files, we are 	moving files here for future references.
 	
  5. Set file.location=/Users/454424/Desktop/customer_files 
  6. Set file.processed=/Users/454424/Desktop/customer_files/processed (customer statement files to be moved once validated) 
@@ -24,8 +23,7 @@ There are two validations:
      process it. 
  11. Finally we will get a responce about the failured records. We can fetch it and dissplay the required fields in the UI.
   
-  
-  Note : while importng the project, there should not be a space in the directory.
+ # Note : while importng the project, there should not be a space in the directory.
 Eg: 
 
 D:\Rabo Bank\Workspace\ ===>instead of this, we can create as below
@@ -34,8 +32,7 @@ D:\Rabo-Bank\Workspace\
 
 we can create dir by adding undersccore(_) or hyphen(-) for the spaces 
   
-  
-PostMan Configuration:
+# PostMan Configuration for select Customer input file(s)
 1. Remove "Content-Type" from header tab.
 2. navigate to Body tab and selet option "form-data"
 3. add key as "files" and value as "File".
