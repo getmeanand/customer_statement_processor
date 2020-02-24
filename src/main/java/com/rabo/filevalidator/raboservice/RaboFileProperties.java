@@ -1,7 +1,11 @@
-package com.rabo.filevalidator.service;
+package com.rabo.filevalidator.raboservice;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ * @author Anandha
+ *
+ */
 @ConfigurationProperties(prefix = "file")
 public class RaboFileProperties {
 	private String location;

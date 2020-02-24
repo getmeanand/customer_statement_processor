@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.constants;
+package com.rabo.filevalidator.raboconstants;
 
 import java.text.DecimalFormat;
 

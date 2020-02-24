@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.files;
+package com.rabo.filevalidator.rabofiles;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.rabo.filevalidator.constants.RaboConstants;
-import com.rabo.filevalidator.controller.RaboController;
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
-import com.rabo.filevalidator.exceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.operations.RaboFileOperations;
+import com.rabo.filevalidator.raboconstants.RaboConstants;
+import com.rabo.filevalidator.rabocontroller.RaboController;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
+import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
+import com.rabo.filevalidator.rabooperations.RaboFileOperations;
 
 /**
  * @author Anandha

@@ -1,11 +1,11 @@
-package com.rabo.filevalidator.operations;
+package com.rabo.filevalidator.rabooperations;
 
 import org.springframework.stereotype.Component;
 
-import com.rabo.filevalidator.enums.FILE_TYPE;
+import com.rabo.filevalidator.raboenums.FILE_TYPE;
 
 /**
- * @author 454424
+ * @author Anandha
  *
  */
 @Component
@@ -22,9 +22,9 @@ public class RaboFileOperationsFactory extends RaboBaseFileOperations {
 		if (fileTypeObj == null) {
 			return null;
 		}
-		if (FILE_TYPE.XML.equals(fileTypeObj)) { // checks if files type is xml
+		if (FILE_TYPE.XML.equals(fileTypeObj)) { // checks if file type is xml
 			return fileMapObject.get(FILE_TYPE.XML);
-		} else if (FILE_TYPE.CSV.equals(fileTypeObj)) {// checks if files type is csv
+		} else if (FILE_TYPE.CSV.equals(fileTypeObj)) {// checks if file type is csv
 			return fileMapObject.get(FILE_TYPE.CSV);
 		}
 

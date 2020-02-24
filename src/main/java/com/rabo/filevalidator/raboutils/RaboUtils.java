@@ -1,12 +1,10 @@
-package com.rabo.filevalidator.utils;
+package com.rabo.filevalidator.raboutils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -17,15 +15,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.rabo.filevalidator.constants.RaboConstants;
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
-import com.rabo.filevalidator.exceptions.RaboCustomerFileSaveException;
-import com.rabo.filevalidator.service.RaboFileProperties;
+import com.rabo.filevalidator.raboconstants.RaboConstants;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
+import com.rabo.filevalidator.raboservice.RaboFileProperties;
 
 /**
+ * This is Utilities file for the Rabo Statement Process. it contains
+ * implementing and manipulating the Customer input files
+ * 
  * @author Anandha
  *
  */
@@ -46,25 +44,30 @@ public class RaboUtils {
 		Files.createDirectories(this.fileProcessedStorageLocation);
 	}
 
-	/** Validating the customer account info and return the failure customer list
+	/**
+	 * Validating the customer account info and return the failure customer list
+	 * 
 	 * @param paramList
 	 * @return
 	 */
 	public static List<RaboCustomerAccounts> validateCustomerRecords(List<RaboCustomerAccounts> customerAccountList) {
 		Set<String> setReferenceData = new HashSet<>();
 
-		return customerAccountList.stream().map(customerData -> validateCustomerDataColumns(customerData, setReferenceData))
+		return customerAccountList.stream()
+				.map(customerData -> validateCustomerDataColumns(customerData, setReferenceData))
 				.filter(Objects::nonNull).collect(Collectors.toList());
 
 	}
 
-
-	/** Validating the Customer Data and return the failure customer information
+	/**
+	 * Validating the Customer Data and return the failure customer information
+	 * 
 	 * @param customerData
 	 * @param setDataCheck
 	 * @return
 	 */
-	private static RaboCustomerAccounts validateCustomerDataColumns(RaboCustomerAccounts customerData, Set<String> setDataCheck) {
+	private static RaboCustomerAccounts validateCustomerDataColumns(RaboCustomerAccounts customerData,
+			Set<String> setDataCheck) {
 		RaboCustomerAccounts failedRecord = null;
 
 		if (!setDataCheck.add(customerData.getReference())) {
@@ -79,7 +82,10 @@ public class RaboUtils {
 		return failedRecord;
 	}
 
-	/** Moving the processed customer files to processed location for the future reference
+	/**
+	 * Moving the processed customer files to processed location for the future
+	 * reference
+	 * 
 	 * @param src
 	 * @param dest
 	 */
@@ -99,7 +105,9 @@ public class RaboUtils {
 
 	}
 
-	/** Fetching the customer file type like csv or xml
+	/**
+	 * Fetching the customer file type like csv or xml
+	 * 
 	 * @param customerFile
 	 * @return
 	 */

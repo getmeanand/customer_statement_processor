@@ -24,9 +24,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
-import com.rabo.filevalidator.service.RaboFileProperties;
-import com.rabo.filevalidator.service.RaboService;
+import com.rabo.filevalidator.rabocontroller.RaboController;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
+import com.rabo.filevalidator.raboservice.RaboFileProperties;
+import com.rabo.filevalidator.raboservice.RaboService;
 
 @WebMvcTest(RaboController.class)
 @RunWith(SpringRunner.class)

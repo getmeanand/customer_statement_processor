@@ -22,13 +22,14 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
-import com.rabo.filevalidator.enums.FILE_TYPE;
-import com.rabo.filevalidator.exceptions.RaboCustomerFileSaveException;
-import com.rabo.filevalidator.exceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.files.RaboCSVFile;
-import com.rabo.filevalidator.operations.RaboFileOperationsFactory;
-import com.rabo.filevalidator.utils.RaboUtils;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
+import com.rabo.filevalidator.raboenums.FILE_TYPE;
+import com.rabo.filevalidator.raboexceptions.RaboCustomerFileSaveException;
+import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
+import com.rabo.filevalidator.rabofiles.RaboCSVFile;
+import com.rabo.filevalidator.rabooperations.RaboFileOperationsFactory;
+import com.rabo.filevalidator.raboservice.RaboService;
+import com.rabo.filevalidator.raboutils.RaboUtils;
 
 @RunWith(SpringRunner.class)
 public class RaboServiceTest {

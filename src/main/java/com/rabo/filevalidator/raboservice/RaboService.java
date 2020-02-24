@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.service;
+package com.rabo.filevalidator.raboservice;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,15 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rabo.filevalidator.constants.RaboConstants;
-import com.rabo.filevalidator.controller.RaboController;
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
-import com.rabo.filevalidator.enums.FILE_TYPE;
-import com.rabo.filevalidator.exceptions.RaboCustomerFileSaveException;
-import com.rabo.filevalidator.exceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.operations.RaboFileOperations;
-import com.rabo.filevalidator.operations.RaboFileOperationsFactory;
-import com.rabo.filevalidator.utils.RaboUtils;
+import com.rabo.filevalidator.raboconstants.RaboConstants;
+import com.rabo.filevalidator.rabocontroller.RaboController;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
+import com.rabo.filevalidator.raboenums.FILE_TYPE;
+import com.rabo.filevalidator.raboexceptions.RaboCustomerFileSaveException;
+import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
+import com.rabo.filevalidator.rabooperations.RaboFileOperations;
+import com.rabo.filevalidator.rabooperations.RaboFileOperationsFactory;
+import com.rabo.filevalidator.raboutils.RaboUtils;
 
 /**
  * RaboService class contain the functional implementation of Rabobank customer
@@ -123,6 +123,14 @@ public class RaboService {
 		return filesInPhysicalPathList;
 	}
 
+	/**
+	 * This Method is used to store the user input file in the physical path for
+	 * validating it.
+	 * 
+	 * @param file
+	 * @return
+	 * @throws RaboCustomerFileSaveException
+	 */
 	public String storeCustomerFiles(MultipartFile file) throws RaboCustomerFileSaveException {
 
 		String filename = StringUtils.cleanPath(file.getOriginalFilename());

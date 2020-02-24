@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.dto;
+package com.rabo.filevalidator.rabodto;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

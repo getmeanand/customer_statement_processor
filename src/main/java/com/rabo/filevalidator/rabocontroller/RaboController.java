@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.controller;
+package com.rabo.filevalidator.rabocontroller;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
-import com.rabo.filevalidator.exceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.service.RaboService;
-import com.rabo.filevalidator.utils.RaboUtils;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
+import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
+import com.rabo.filevalidator.raboservice.RaboService;
+import com.rabo.filevalidator.raboutils.RaboUtils;
 
 /**
  * @author 454424

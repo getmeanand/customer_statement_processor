@@ -1,9 +1,13 @@
-package com.rabo.filevalidator.files;
+package com.rabo.filevalidator.rabofiles;
 
 import java.util.List;
 
-import com.rabo.filevalidator.dto.RaboCustomerAccounts;
+import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
 
+/**
+ * @author 454424
+ *
+ */
 public abstract class RaboFileParser {
 	public abstract RaboCustomerAccounts parseCustomerInformation(String data);
 
