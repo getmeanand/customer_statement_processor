@@ -1,11 +1,11 @@
-package com.rabo.filevalidator.rabooperations;
+package com.rabo.filevalidator.operations;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-import com.rabo.filevalidator.raboenums.FILE_TYPE;
-import com.rabo.filevalidator.rabofiles.RaboCSVFile;
-import com.rabo.filevalidator.rabofiles.RaboXMLFile;
+import com.rabo.filevalidator.enums.FILE_TYPE;
+import com.rabo.filevalidator.validatorfiles.CSVFile;
+import com.rabo.filevalidator.validatorfiles.XMLFile;
 
 /**
  * This Abstract class for creating the xml, or csv file instances
@@ -13,10 +13,10 @@ import com.rabo.filevalidator.rabofiles.RaboXMLFile;
  * @author Anandha
  *
  */
-public abstract class RaboBaseFileOperations {
+public abstract class BaseFileOperations {
 	protected Map<FILE_TYPE, Object> fileMapObject;
 
-	public RaboBaseFileOperations() {
+	public BaseFileOperations() {
 		super();
 		initiateFileTypeMap();
 	}
@@ -28,8 +28,8 @@ public abstract class RaboBaseFileOperations {
 	private void initiateFileTypeMap() {
 		fileMapObject = new EnumMap<FILE_TYPE, Object>(FILE_TYPE.class);
 
-		fileMapObject.put(FILE_TYPE.XML, new RaboXMLFile());
-		fileMapObject.put(FILE_TYPE.CSV, new RaboCSVFile());
+		fileMapObject.put(FILE_TYPE.XML, new XMLFile());
+		fileMapObject.put(FILE_TYPE.CSV, new CSVFile());
 
 	}
 

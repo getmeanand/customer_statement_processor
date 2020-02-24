@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.rabodto;
+package com.rabo.filevalidator.dto;
 
 import java.util.List;
 
@@ -13,12 +13,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="records")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RaboCustomerRecords {
+public class CustomerRecords {
 	
 	@XmlElement(name="record")
-	private List<RaboCustomerAccounts> record = null;
+	private List<CustomerAccounts> record = null;
 
-	public List<RaboCustomerAccounts> getRecord() {
+	public List<CustomerAccounts> getRecord() {
 		return record;
 	}
 

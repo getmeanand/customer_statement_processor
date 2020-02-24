@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.rabofiles;
+package com.rabo.filevalidator.validatorfiles;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,21 +12,21 @@ import java.util.stream.Collectors;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.rabo.filevalidator.raboconstants.RaboConstants;
-import com.rabo.filevalidator.rabocontroller.RaboController;
-import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
-import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.rabooperations.RaboFileOperations;
+import com.rabo.filevalidator.constants.FileValidatorConstants;
+import com.rabo.filevalidator.controller.FileValidatorController;
+import com.rabo.filevalidator.dto.CustomerAccounts;
+import com.rabo.filevalidator.exceptions.CustomerFileNotFoundException;
+import com.rabo.filevalidator.operations.FileOperations;
 
 /**
  * @author Anandha
  *
  */
 @Component
-public class RaboCSVFile extends RaboFileOperations {
-	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RaboController.class);
+public class CSVFile extends FileOperations {
+	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(FileValidatorController.class);
 
-	private List<RaboCustomerAccounts> customerDataList = null;
+	private List<CustomerAccounts> customerDataList = null;
 
 	/**
 	 * This readCustomerValidatorFile() reads the customer statement files from the
@@ -37,17 +37,17 @@ public class RaboCSVFile extends RaboFileOperations {
 	 * @return
 	 */
 	@Override
-	public List<RaboCustomerAccounts> readCustomerValidatorFile(File csvFile) {
-		RaboCSVParser csvParser = new RaboCSVParser();
+	public List<CustomerAccounts> readCustomerValidatorFile(File csvFile) {
+		CSVParser csvParser = new CSVParser();
 		File inputF = new File(csvFile.toString());
 
 		try (InputStream inputFS = new FileInputStream(inputF);
 				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
 
-			List<RaboCustomerAccounts> csvFileInformationList = br.lines().skip(1)
+			List<CustomerAccounts> csvFileInformationList = br.lines().skip(1)
 					.map(csvParser::parseCustomerInformation).collect(Collectors.toList());
 
-			if (csvFileInformationList != null && csvFileInformationList.size() != RaboConstants.INT_VAL_ZERO) {
+			if (csvFileInformationList != null && csvFileInformationList.size() != FileValidatorConstants.INT_VAL_ZERO) {
 				customerDataList = csvParser.validateCustomerDataList(csvFileInformationList);
 			}
 

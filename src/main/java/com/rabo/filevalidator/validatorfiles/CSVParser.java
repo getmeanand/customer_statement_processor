@@ -1,16 +1,16 @@
-package com.rabo.filevalidator.rabofiles;
+package com.rabo.filevalidator.validatorfiles;
 
 import java.util.List;
 
-import com.rabo.filevalidator.raboconstants.RaboConstants;
-import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
-import com.rabo.filevalidator.raboutils.RaboUtils;
+import com.rabo.filevalidator.constants.FileValidatorConstants;
+import com.rabo.filevalidator.dto.CustomerAccounts;
+import com.rabo.filevalidator.utils.FileValidatorUtils;
 
 /**
  * @author Anandha
  *
  */
-public class RaboCSVParser extends RaboFileParser {
+public class CSVParser extends CustomerFileParser {
 
 	/**
 	 * this function parse the customer data and parse it
@@ -19,11 +19,11 @@ public class RaboCSVParser extends RaboFileParser {
 	 * @return RaboCustomerAccounts
 	 */
 	@Override
-	public RaboCustomerAccounts parseCustomerInformation(final String customerData) {
+	public CustomerAccounts parseCustomerInformation(final String customerData) {
 
-		RaboCustomerAccounts record = null;
+		CustomerAccounts record = null;
 
-		String[] strCustomerDetails = customerData.split(RaboConstants.COMMA_DELIMITER);
+		String[] strCustomerDetails = customerData.split(FileValidatorConstants.COMMA_DELIMITER);
 		if (strCustomerDetails != null) {
 			record = parseSplitedValues(strCustomerDetails);
 		}
@@ -40,8 +40,8 @@ public class RaboCSVParser extends RaboFileParser {
 	 * @return List<RaboCustomerAccounts>
 	 */
 	@Override
-	public List<RaboCustomerAccounts> validateCustomerDataList(List<RaboCustomerAccounts> customerDataList) {
-		return RaboUtils.validateCustomerRecords(customerDataList);
+	public List<CustomerAccounts> validateCustomerDataList(List<CustomerAccounts> customerDataList) {
+		return FileValidatorUtils.validateCustomerRecords(customerDataList);
 
 	}
 
@@ -49,12 +49,12 @@ public class RaboCSVParser extends RaboFileParser {
 	 * @param splitRecDetails
 	 * @return
 	 */
-	public RaboCustomerAccounts parseSplitedValues(String[] splitRecDetails) {
-		RaboCustomerAccounts record = null;
+	public CustomerAccounts parseSplitedValues(String[] splitRecDetails) {
+		CustomerAccounts record = null;
 		if (!nullCheck(splitRecDetails)) {
-			int index = RaboConstants.INT_VAL_ZERO;
+			int index = FileValidatorConstants.INT_VAL_ZERO;
 			if (splitRecDetails != null) {
-				record = new RaboCustomerAccounts();
+				record = new CustomerAccounts();
 				record.setReference(splitRecDetails[index++]);
 				record.setAccountNumber(splitRecDetails[index++]);
 				record.setDescription(splitRecDetails[index++]);
@@ -77,14 +77,14 @@ public class RaboCSVParser extends RaboFileParser {
 		if (value == null) {
 			return true;
 		}
-		if (value.length == RaboConstants.INT_VAL_ZERO) {
+		if (value.length == FileValidatorConstants.INT_VAL_ZERO) {
 			return true;
 		}
 		for (String strElement : value) {
 			if (strElement == null) {
 				return true;
 			}
-			if (strElement.length() == RaboConstants.INT_VAL_ZERO) {
+			if (strElement.length() == FileValidatorConstants.INT_VAL_ZERO) {
 				return true;
 			}
 			if (strElement.isEmpty()) {

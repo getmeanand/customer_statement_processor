@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.raboexceptions;
+package com.rabo.filevalidator.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  */
 @ResponseStatus(code=HttpStatus.NOT_FOUND,reason="Error in Saving Customer File!!")
- public class RaboCustomerFileSaveException extends RuntimeException {
+ public class CustomerFileSaveException extends RuntimeException {
 
 	
 

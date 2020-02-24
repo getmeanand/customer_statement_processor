@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.rabocontroller;
+package com.rabo.filevalidator.controller;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +18,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
-import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.raboservice.RaboService;
-import com.rabo.filevalidator.raboutils.RaboUtils;
+import com.rabo.filevalidator.dto.CustomerAccounts;
+import com.rabo.filevalidator.exceptions.CustomerFileNotFoundException;
+import com.rabo.filevalidator.service.FileValidatorService;
+import com.rabo.filevalidator.utils.FileValidatorUtils;
 
 /**
  * @author 454424
  *
  */
 @RestController
-public class RaboController {
+public class FileValidatorController {
 
+	private static final Logger logger = LoggerFactory.getLogger(FileValidatorUtils.class);
+
+	
 	@Autowired
-	RaboService raboService;
+	FileValidatorService raboService;
 
 	/**
 	 * This uploadMultipleFiles() deals with loading the customer statement files
@@ -39,12 +44,12 @@ public class RaboController {
 	 * @param files
 	 * @return
 	 * @throws IOException
-	 * @throws RaboFileNotFoundException
+	 * @throws CustomerFileNotFoundException
 	 */
 	@PostMapping("/uploadCustomerFiles")
 	@ResponseBody
-	public ResponseEntity<List<RaboCustomerAccounts>> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files)
-			throws IOException, RaboFileNotFoundException {
+	public ResponseEntity<List<CustomerAccounts>> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files)
+			throws IOException, CustomerFileNotFoundException {
 		try {
 			List<String> listCustomerFiles = Arrays.stream(files).map(file -> raboService.storeCustomerFiles(file))
 					.collect(Collectors.toList());
@@ -54,9 +59,12 @@ public class RaboController {
 						.orElse(new ResponseEntity<>(HttpStatus.CONFLICT));
 			}
 		} catch (Exception e) {
-			System.out.println("Exception in Processing File::" + e.toString());
+			
+			logger.error("Exception in Processing Customer File::"+e.getMessage());
+			
 		}
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
+		return  new ResponseEntity<>(HttpStatus.CONFLICT);
+		
 	}
 
 }

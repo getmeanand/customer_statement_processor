@@ -24,12 +24,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.rabo.filevalidator.rabocontroller.RaboController;
-import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
-import com.rabo.filevalidator.raboservice.RaboFileProperties;
-import com.rabo.filevalidator.raboservice.RaboService;
+import com.rabo.filevalidator.controller.FileValidatorController;
+import com.rabo.filevalidator.dto.CustomerAccounts;
+import com.rabo.filevalidator.service.FileProperties;
+import com.rabo.filevalidator.service.FileValidatorService;
 
-@WebMvcTest(RaboController.class)
+@WebMvcTest(FileValidatorController.class)
 @RunWith(SpringRunner.class)
 public class RaboControllerTest {
 
@@ -37,20 +37,20 @@ public class RaboControllerTest {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private RaboService raboService;
+	private FileValidatorService raboService;
 
 	Path fileStorageLocation;
 
-	List<RaboCustomerAccounts> records;
+	List<CustomerAccounts> records;
 	String strCustomerFile = new String("records.xml");
 
 	@MockBean
-	RaboFileProperties raboFileProperties;
+	FileProperties raboFileProperties;
 
 	@Before
 	public void setUp() {
 		records = new ArrayList();
-		RaboCustomerAccounts record = new RaboCustomerAccounts();
+		CustomerAccounts record = new CustomerAccounts();
 		record.setStartBalance(100);
 		record.setMutation(50);
 		record.setEndBalance(50);

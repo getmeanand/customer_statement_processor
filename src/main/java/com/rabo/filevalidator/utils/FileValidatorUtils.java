@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.raboutils;
+package com.rabo.filevalidator.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.rabo.filevalidator.raboconstants.RaboConstants;
-import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
-import com.rabo.filevalidator.raboservice.RaboFileProperties;
+import com.rabo.filevalidator.constants.FileValidatorConstants;
+import com.rabo.filevalidator.dto.CustomerAccounts;
+import com.rabo.filevalidator.service.FileProperties;
 
 /**
  * This is Utilities file for the Rabo Statement Process. it contains
@@ -28,14 +28,14 @@ import com.rabo.filevalidator.raboservice.RaboFileProperties;
  *
  */
 @Component
-public class RaboUtils {
-	private static final Logger logger = LoggerFactory.getLogger(RaboUtils.class);
+public class FileValidatorUtils {
+	private static final Logger logger = LoggerFactory.getLogger(FileValidatorUtils.class);
 
 	public static Path fileStorageLocation;
 	public static Path fileProcessedStorageLocation;
 
 	@Autowired
-	public RaboUtils(RaboFileProperties fileStorageProperties, RaboFileProperties fileProcedssedStorageLocation)
+	public FileValidatorUtils(FileProperties fileStorageProperties, FileProperties fileProcedssedStorageLocation)
 			throws IOException {
 		this.fileStorageLocation = Paths.get(fileStorageProperties.getLocation()).toAbsolutePath().normalize();
 		this.fileProcessedStorageLocation = Paths.get(fileStorageProperties.getProcessed()).toAbsolutePath()
@@ -50,7 +50,7 @@ public class RaboUtils {
 	 * @param paramList
 	 * @return
 	 */
-	public static List<RaboCustomerAccounts> validateCustomerRecords(List<RaboCustomerAccounts> customerAccountList) {
+	public static List<CustomerAccounts> validateCustomerRecords(List<CustomerAccounts> customerAccountList) {
 		Set<String> setReferenceData = new HashSet<>();
 
 		return customerAccountList.stream()
@@ -66,15 +66,15 @@ public class RaboUtils {
 	 * @param setDataCheck
 	 * @return
 	 */
-	private static RaboCustomerAccounts validateCustomerDataColumns(RaboCustomerAccounts customerData,
+	private static CustomerAccounts validateCustomerDataColumns(CustomerAccounts customerData,
 			Set<String> setDataCheck) {
-		RaboCustomerAccounts failedRecord = null;
+		CustomerAccounts failedRecord = null;
 
 		if (!setDataCheck.add(customerData.getReference())) {
 			failedRecord = customerData;
 		} else {
 			double endBalance = Double.valueOf(
-					RaboConstants.DECIMAL_FORMAT.format(customerData.getStartBalance() + customerData.getMutation()));
+					FileValidatorConstants.DECIMAL_FORMAT.format(customerData.getStartBalance() + customerData.getMutation()));
 			if (endBalance != customerData.getEndBalance())
 				failedRecord = customerData;
 

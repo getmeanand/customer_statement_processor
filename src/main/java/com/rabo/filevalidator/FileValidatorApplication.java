@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import com.rabo.filevalidator.raboservice.RaboFileProperties;
+import com.rabo.filevalidator.service.FileProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ RaboFileProperties.class })
+@EnableConfigurationProperties({ FileProperties.class })
 public class FileValidatorApplication {
 
 	public static void main(String[] args) {

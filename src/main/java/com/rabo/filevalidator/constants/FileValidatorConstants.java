@@ -1,4 +1,4 @@
-package com.rabo.filevalidator.raboconstants;
+package com.rabo.filevalidator.constants;
 
 import java.text.DecimalFormat;
 
@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
  * @author Anandha
  *
  */
-public class RaboConstants {
+public class FileValidatorConstants {
 
 	public static final String COMMA_DELIMITER = ",";
 

@@ -22,26 +22,26 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rabo.filevalidator.rabodto.RaboCustomerAccounts;
-import com.rabo.filevalidator.raboenums.FILE_TYPE;
-import com.rabo.filevalidator.raboexceptions.RaboCustomerFileSaveException;
-import com.rabo.filevalidator.raboexceptions.RaboFileNotFoundException;
-import com.rabo.filevalidator.rabofiles.RaboCSVFile;
-import com.rabo.filevalidator.rabooperations.RaboFileOperationsFactory;
-import com.rabo.filevalidator.raboservice.RaboService;
-import com.rabo.filevalidator.raboutils.RaboUtils;
+import com.rabo.filevalidator.dto.CustomerAccounts;
+import com.rabo.filevalidator.enums.FILE_TYPE;
+import com.rabo.filevalidator.exceptions.CustomerFileSaveException;
+import com.rabo.filevalidator.exceptions.CustomerFileNotFoundException;
+import com.rabo.filevalidator.operations.FileOperationsFactory;
+import com.rabo.filevalidator.service.FileValidatorService;
+import com.rabo.filevalidator.utils.FileValidatorUtils;
+import com.rabo.filevalidator.validatorfiles.CSVFile;
 
 @RunWith(SpringRunner.class)
 public class RaboServiceTest {
 
 	@MockBean
-	private RaboFileOperationsFactory fileFactory;
+	private FileOperationsFactory fileFactory;
 
 	@MockBean
-	RaboUtils raboUtils;
+	FileValidatorUtils raboUtils;
 
 	@InjectMocks
-	private RaboService raboServiceTest;
+	private FileValidatorService raboServiceTest;
 
 	@Before
 	public void setUp() {
@@ -53,19 +53,19 @@ public class RaboServiceTest {
 	}
 
 	@Test
-	public void testLoadAndProcessCSVFile() throws RaboFileNotFoundException, IOException {
+	public void testLoadAndProcessCSVFile() throws CustomerFileNotFoundException, IOException {
 
-		when(fileFactory.getFileInstance(FILE_TYPE.CSV)).thenReturn(new RaboCSVFile());
+		when(fileFactory.getFileInstance(FILE_TYPE.CSV)).thenReturn(new CSVFile());
 
-		List<RaboCustomerAccounts> actualRecords = raboServiceTest.processAndValidateCustomerFiles();
+		List<CustomerAccounts> actualRecords = raboServiceTest.processAndValidateCustomerFiles();
 
 		Assert.assertNotNull(actualRecords);
 
 		verify(fileFactory, times(1)).getFileInstance(FILE_TYPE.CSV);
 	}
 
-	@Test(expected = RaboCustomerFileSaveException.class)
-	public void testStoreCustomerFiles() throws RaboFileNotFoundException, IOException {
+	@Test(expected = CustomerFileSaveException.class)
+	public void testStoreCustomerFiles() throws CustomerFileNotFoundException, IOException {
 
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
 		MultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
