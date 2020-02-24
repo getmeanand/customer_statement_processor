@@ -63,7 +63,7 @@ public class FileValidatorServiceTest {
 		
 		
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "records.csv", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.csv", "multipart/form-data", is);
 
 		List<CustomerAccounts> actualRecords = raboServiceTest.processCustomerFiles(mockMultipartFile);
 
@@ -79,7 +79,7 @@ public class FileValidatorServiceTest {
 
 		
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.xml");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "records.xml", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.xml", "multipart/form-data", is);
 
 		List<CustomerAccounts> actualRecords = raboServiceTest.processCustomerFiles(mockMultipartFile);
 
@@ -92,7 +92,7 @@ public class FileValidatorServiceTest {
 	public void testExpFile() throws CustomerFileNotFoundException, IOException {
 
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.txt");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "records.txt", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.txt", "multipart/form-data", is);
 
 		raboServiceTest.processCustomerFiles(mockMultipartFile);
 
