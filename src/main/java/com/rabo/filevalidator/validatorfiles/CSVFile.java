@@ -1,8 +1,6 @@
 package com.rabo.filevalidator.validatorfiles;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,11 +9,11 @@ import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.rabo.filevalidator.constants.FileValidatorConstants;
 import com.rabo.filevalidator.controller.FileValidatorController;
 import com.rabo.filevalidator.dto.CustomerAccounts;
-import com.rabo.filevalidator.exceptions.CustomerFileNotFoundException;
 import com.rabo.filevalidator.operations.FileOperations;
 
 /**
@@ -26,7 +24,7 @@ import com.rabo.filevalidator.operations.FileOperations;
 public class CSVFile extends FileOperations {
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(FileValidatorController.class);
 
-	private List<CustomerAccounts> customerDataList = null;
+	private CSVParser csvParser;
 
 	/**
 	 * This readCustomerValidatorFile() reads the customer statement files from the
@@ -35,24 +33,26 @@ public class CSVFile extends FileOperations {
 	 * 
 	 * @param csvFile
 	 * @return
+	 * @throws IOException
 	 */
 	@Override
-	public List<CustomerAccounts> readCustomerValidatorFile(File csvFile) {
-		CSVParser csvParser = new CSVParser();
-		File inputF = new File(csvFile.toString());
-
-		try (InputStream inputFS = new FileInputStream(inputF);
+	public List<CustomerAccounts> readCustomerValidatorFile(MultipartFile customerCSVFile) throws IOException {
+		List<CustomerAccounts> customerDataList = null;
+		csvParser = new CSVParser();
+		try (InputStream inputFS = customerCSVFile.getInputStream();
 				BufferedReader br = new BufferedReader(new InputStreamReader(inputFS))) {
 
-			List<CustomerAccounts> csvFileInformationList = br.lines().skip(1)
-					.map(csvParser::parseCustomerInformation).collect(Collectors.toList());
+			List<CustomerAccounts> csvFileInformationList = br.lines().skip(1).map(csvParser::parseCustomerInformation)
+					.collect(Collectors.toList());
 
-			if (csvFileInformationList != null && csvFileInformationList.size() != FileValidatorConstants.INT_VAL_ZERO) {
+			if (csvFileInformationList != null
+					&& csvFileInformationList.size() != FileValidatorConstants.INT_VAL_ZERO) {
 				customerDataList = csvParser.validateCustomerDataList(csvFileInformationList);
 			}
 
 		} catch (IOException e) {
-			logger.error("Error in Read Customer file::" + e.getMessage());
+			logger.error("Error in Read CSV Customer file::" + e.getMessage());
+			throw new IOException();
 		}
 
 		return customerDataList;

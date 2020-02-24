@@ -2,12 +2,8 @@ package com.rabo.filevalidator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-
-import com.rabo.filevalidator.service.FileProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ FileProperties.class })
 public class FileValidatorApplication {
 
 	public static void main(String[] args) {

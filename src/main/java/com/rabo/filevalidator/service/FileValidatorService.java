@@ -1,14 +1,7 @@
 package com.rabo.filevalidator.service;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +14,6 @@ import com.rabo.filevalidator.constants.FileValidatorConstants;
 import com.rabo.filevalidator.controller.FileValidatorController;
 import com.rabo.filevalidator.dto.CustomerAccounts;
 import com.rabo.filevalidator.enums.FILE_TYPE;
-import com.rabo.filevalidator.exceptions.CustomerFileSaveException;
 import com.rabo.filevalidator.exceptions.CustomerFileNotFoundException;
 import com.rabo.filevalidator.operations.FileOperations;
 import com.rabo.filevalidator.operations.FileOperationsFactory;
@@ -41,40 +33,7 @@ public class FileValidatorService {
 
 	@Autowired
 	private FileOperationsFactory fileFactory;
-	List<CustomerAccounts> filteredCustomerList ;
-
-	/**
-	 * processAndValidateCustomerFiles() loads the Customer statement files and
-	 * start validating based on the validation criteria and finally return list of
-	 * failure customer records.
-	 * 
-	 * @return
-	 * @throws CustomerFileNotFoundException
-	 * @throws IOException
-	 */
-	public List<CustomerAccounts> processAndValidateCustomerFiles() throws CustomerFileNotFoundException, IOException {
-
-		filteredCustomerList = new ArrayList<CustomerAccounts>();
-
-		List<File> filesInFolder = loadAllFilesFromPath();
-		filesInFolder.forEach(customerFile -> {
-			String fileType = FileValidatorUtils.getCustomerFileExtension(customerFile);
-
-			if (fileType.equalsIgnoreCase(FileValidatorConstants.FILE_TYPE_CSV)) {
-				filteredCustomerList.addAll(loadAndProcessCSVFile(customerFile));
-				FileValidatorUtils.moveFilesToProcesedFolder(customerFile.getAbsolutePath(),
-						FileValidatorUtils.fileProcessedStorageLocation + "\\" + customerFile.getName());
-
-			} else {
-				filteredCustomerList.addAll(loadAndProcessXMLFile(customerFile));
-				FileValidatorUtils.moveFilesToProcesedFolder(customerFile.getAbsolutePath(),
-						FileValidatorUtils.fileProcessedStorageLocation + "\\" + customerFile.getName());
-			}
-
-		});
-
-		return filteredCustomerList;
-	}
+	List<CustomerAccounts> filteredCustomerList;
 
 	/**
 	 * this function gets the file factory instance of csv and loads the customer
@@ -83,11 +42,13 @@ public class FileValidatorService {
 	 * @param csvFile
 	 * @return
 	 * @throws CustomerFileNotFoundException
+	 * @throws IOException
 	 */
-	public List<CustomerAccounts> loadAndProcessCSVFile(File csvFile) throws CustomerFileNotFoundException {
+	public List<CustomerAccounts> loadAndProcessCSVFile(MultipartFile file)
+			throws CustomerFileNotFoundException, IOException {
 		FileOperations csvFileOperation = (FileOperations) fileFactory.getFileInstance(FILE_TYPE.CSV);
 
-		return csvFileOperation.readCustomerValidatorFile(csvFile);
+		return csvFileOperation.readCustomerValidatorFile(file);
 	}
 
 	/**
@@ -97,8 +58,10 @@ public class FileValidatorService {
 	 * @param xmlFile
 	 * @return
 	 * @throws CustomerFileNotFoundException
+	 * @throws IOException
 	 */
-	public List<CustomerAccounts> loadAndProcessXMLFile(File xmlFile) throws CustomerFileNotFoundException {
+	public List<CustomerAccounts> loadAndProcessXMLFile(MultipartFile xmlFile)
+			throws CustomerFileNotFoundException, IOException {
 		FileOperations xmlFileOperation = (FileOperations) fileFactory.getFileInstance(FILE_TYPE.XML);
 
 		return xmlFileOperation.readCustomerValidatorFile(xmlFile);
@@ -106,48 +69,34 @@ public class FileValidatorService {
 	}
 
 	/**
-	 * It loads, all the files from the customer files location and return list of
-	 * files
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public List<File> loadAllFilesFromPath() throws IOException {
-		List<File> filesInPhysicalPathList;
-
-		filesInPhysicalPathList = Files.walk(FileValidatorUtils.fileStorageLocation).filter(Files::isRegularFile)
-				.map(Path::toFile).collect(Collectors.toList());
-		if (filesInPhysicalPathList.isEmpty()) {
-			throw new CustomerFileNotFoundException();
-		}
-
-		return filesInPhysicalPathList;
-	}
-
-	/**
-	 * This Method is used to store the user input file in the physical path for
-	 * validating it.
+	 * Function Accept the user input file and start processing on it. finally it
+	 * will return the list of failure customer records.
 	 * 
 	 * @param file
 	 * @return
-	 * @throws CustomerFileSaveException
+	 * @throws CustomerFileNotFoundException
+	 * @throws IOException
 	 */
-	public String storeCustomerFiles(MultipartFile file) throws CustomerFileSaveException {
+	public List<CustomerAccounts> processCustomerFiles(MultipartFile customerFile)
+			throws CustomerFileNotFoundException, IOException {
+		String filename = StringUtils.cleanPath(customerFile.getOriginalFilename());
 
-		String filename = StringUtils.cleanPath(file.getOriginalFilename());
-		if (filename.endsWith(FileValidatorConstants.FILE_TYPE_CSV) || filename.endsWith(FileValidatorConstants.FILE_TYPE_XML)) {
+		if (filename.endsWith(FileValidatorConstants.FILE_TYPE_CSV)
+				|| filename.endsWith(FileValidatorConstants.FILE_TYPE_XML)) {
 
-			try (InputStream inputStream = file.getInputStream()) {
-				Files.copy(inputStream, FileValidatorUtils.fileStorageLocation.resolve(filename),
-						StandardCopyOption.REPLACE_EXISTING);
-			} catch (Exception e) {
-				logger.error("Error on Customer Files Store:: " + e.getMessage());
-				throw new CustomerFileSaveException();
+			if (FileValidatorUtils.getCustomerFileExtension(customerFile.getOriginalFilename())
+					.equalsIgnoreCase(FileValidatorConstants.FILE_TYPE_CSV)) {
+				filteredCustomerList = loadAndProcessCSVFile(customerFile);
+			} else {
+				filteredCustomerList = loadAndProcessXMLFile(customerFile);
 			}
-		}else {
+
+		} else {
+			logger.error("Customer file Not Found of type .csv .xml Exception");
 			throw new CustomerFileNotFoundException();
 		}
-		return filename;
-	}
 
+		return filteredCustomerList;
+
+	}
 }

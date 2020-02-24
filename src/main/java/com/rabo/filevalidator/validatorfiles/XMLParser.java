@@ -2,6 +2,8 @@ package com.rabo.filevalidator.validatorfiles;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.rabo.filevalidator.dto.CustomerAccounts;
 import com.rabo.filevalidator.utils.FileValidatorUtils;
 
@@ -9,6 +11,7 @@ import com.rabo.filevalidator.utils.FileValidatorUtils;
  * @author Anandha
  *
  */
+@Component
 public class XMLParser extends CustomerFileParser {
 
 	/**

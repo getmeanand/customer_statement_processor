@@ -2,7 +2,6 @@ package com.rabo.filevalidator.controller;
 
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -24,14 +23,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.rabo.filevalidator.controller.FileValidatorController;
 import com.rabo.filevalidator.dto.CustomerAccounts;
-import com.rabo.filevalidator.service.FileProperties;
 import com.rabo.filevalidator.service.FileValidatorService;
 
 @WebMvcTest(FileValidatorController.class)
 @RunWith(SpringRunner.class)
-public class RaboControllerTest {
+public class FileValidatorControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -42,10 +39,8 @@ public class RaboControllerTest {
 	Path fileStorageLocation;
 
 	List<CustomerAccounts> records;
-	String strCustomerFile = new String("records.xml");
 
-	@MockBean
-	FileProperties raboFileProperties;
+	String strCustomerFile = new String("records.txt");
 
 	@Before
 	public void setUp() {
@@ -60,9 +55,9 @@ public class RaboControllerTest {
 
 	@Test
 	public void testWithCSVFileContent() throws Exception {
-		when(raboService.processAndValidateCustomerFiles()).thenReturn(records);
+		when(raboService.processCustomerFiles(Mockito.any())).thenReturn(records);
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "records.csv", "multipart/form-data", is);
 		MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
 						.contentType(MediaType.MULTIPART_FORM_DATA))
@@ -75,7 +70,7 @@ public class RaboControllerTest {
 
 	@Test
 	public void testWithXMLFileContent() throws Exception {
-		when(raboService.processAndValidateCustomerFiles()).thenReturn(records);
+		when(raboService.processCustomerFiles(Mockito.any())).thenReturn(records);
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.xml");
 		MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "records.xml", "multipart/form-data", is);
 		MvcResult result = mockMvc
@@ -86,34 +81,6 @@ public class RaboControllerTest {
 		String contentAsString = result.getResponse().getContentAsString();
 
 		Assert.assertNotNull(contentAsString);
-	}
-
-	@Test
-	public void testStoreCustomerFiles() throws Exception {
-		when(raboService.processAndValidateCustomerFiles()).thenReturn(records);
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
-
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
-						.contentType(MediaType.MULTIPART_FORM_DATA))
-				.andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
-
-	}
-	
-	@Test
-	public void testStoreCustomerFilesService() throws Exception {
-	
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("files", "records.csv", "multipart/form-data", is);
-
-		when(raboService.storeCustomerFiles(Mockito.any())).thenReturn(strCustomerFile);
-		
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
-						.contentType(MediaType.MULTIPART_FORM_DATA))
-				.andExpect(MockMvcResultMatchers.status().is(200)).andReturn();
-
 	}
 
 }
