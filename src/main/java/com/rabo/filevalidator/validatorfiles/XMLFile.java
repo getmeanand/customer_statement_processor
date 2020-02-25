@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.rabo.filevalidator.constants.FileValidatorConstants;
@@ -29,7 +28,7 @@ public class XMLFile extends FileOperations {
 	 * This readCustomerValidatorFile() reads the customer statement files from the
 	 * path and it will return the list of customer records
 	 * 
-	 * @param csvFile
+	 * @param xmlFile
 	 * @return
 	 */
 	@Override

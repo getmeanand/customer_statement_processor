@@ -31,7 +31,7 @@ public class CSVFile extends FileOperations {
 	 * path and start validating it. finally it will return the list of failure
 	 * records
 	 * 
-	 * @param csvFile
+	 * @param customerCSVFile
 	 * @return
 	 * @throws IOException
 	 */

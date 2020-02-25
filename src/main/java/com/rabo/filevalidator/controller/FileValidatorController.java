@@ -37,10 +37,10 @@ public class FileValidatorController {
 	 * and start processing the validation. finally it will return the list of
 	 * failure records
 	 * 
-	 * @param files
+	 * @param file
 	 * @return
 	 * @throws IOException
-	 * @throws CustomerFileNotFoundException
+	 * @throws CustomerFileNotFoundException, IOException
 	 */
 	@PostMapping("/uploadCustomerFiles")
 	@ResponseBody
@@ -53,11 +53,11 @@ public class FileValidatorController {
 					.orElse(new ResponseEntity<>(HttpStatus.CONFLICT));
 
 		} catch (Exception e) {
-
-			logger.error("Exception in Processing Customer File::" + e.getMessage());
+			logger.error("Exception in Processing Customer File::" + file.getOriginalFilename()+" "+e.getMessage()  );
+			throw new CustomerFileNotFoundException();
+		
 
 		}
-		return new ResponseEntity<>(HttpStatus.CONFLICT);
 
 	}
 

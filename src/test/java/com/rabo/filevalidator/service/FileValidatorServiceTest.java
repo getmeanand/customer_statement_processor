@@ -15,8 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,14 +27,20 @@ import com.rabo.filevalidator.exceptions.CustomerFileNotFoundException;
 import com.rabo.filevalidator.operations.FileOperationsFactory;
 import com.rabo.filevalidator.utils.FileValidatorUtils;
 import com.rabo.filevalidator.validatorfiles.CSVFile;
+import com.rabo.filevalidator.validatorfiles.CSVParser;
 import com.rabo.filevalidator.validatorfiles.XMLFile;
 import com.rabo.filevalidator.validatorfiles.XMLParser;
 
 @RunWith(SpringRunner.class)
 public class FileValidatorServiceTest {
-	
+
 	@MockBean
 	XMLParser xmlParser;
+
+	@MockBean
+	CSVParser csvParser;
+
+	
 
 	@MockBean
 	private FileOperationsFactory fileFactory;
@@ -44,14 +50,17 @@ public class FileValidatorServiceTest {
 
 	@InjectMocks
 	private FileValidatorService raboServiceTest;
-	
 
+	List<CustomerAccounts> cusList = new ArrayList<CustomerAccounts>();
+	CustomerAccounts accounts = new CustomerAccounts();
 	@Before
 	public void setUp() {
-		CustomerAccounts accounts = new CustomerAccounts();
-		accounts.setAccountNumber("324ersdr");
+
 		
-		xmlParser = new XMLParser();
+		accounts.setAccountNumber("324ersdr");
+
+		cusList.add(accounts);
+
 		MockitoAnnotations.initMocks(this);
 	}
 
@@ -60,10 +69,10 @@ public class FileValidatorServiceTest {
 
 		when(fileFactory.getFileInstance(FILE_TYPE.CSV)).thenReturn(new CSVFile());
 		
-		
-		
+
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.csv", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.csv",
+				"multipart/form-data", is);
 
 		List<CustomerAccounts> actualRecords = raboServiceTest.processCustomerFiles(mockMultipartFile);
 
@@ -77,9 +86,9 @@ public class FileValidatorServiceTest {
 
 		when(fileFactory.getFileInstance(FILE_TYPE.XML)).thenReturn(new XMLFile());
 
-		
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.xml");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.xml", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.xml",
+				"multipart/form-data", is);
 
 		List<CustomerAccounts> actualRecords = raboServiceTest.processCustomerFiles(mockMultipartFile);
 
@@ -89,10 +98,11 @@ public class FileValidatorServiceTest {
 	}
 
 	@Test(expected = CustomerFileNotFoundException.class)
-	public void testExpFile() throws CustomerFileNotFoundException, IOException {
+	public void testExpceptionTestFile() throws CustomerFileNotFoundException, IOException {
 
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.txt");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.txt", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.txt",
+				"multipart/form-data", is);
 
 		raboServiceTest.processCustomerFiles(mockMultipartFile);
 

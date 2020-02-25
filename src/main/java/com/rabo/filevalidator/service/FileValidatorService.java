@@ -41,7 +41,7 @@ public class FileValidatorService {
 	 * this function gets the file factory instance of csv and loads the customer
 	 * statement files of type .csv
 	 * 
-	 * @param csvFile
+	 * @param file
 	 * @return
 	 * @throws CustomerFileNotFoundException
 	 * @throws IOException
@@ -74,7 +74,7 @@ public class FileValidatorService {
 	 * Function Accept the user input file and start processing on it. finally it
 	 * will return the list of failure customer records.
 	 * 
-	 * @param file
+	 * @param customerFile
 	 * @return
 	 * @throws CustomerFileNotFoundException
 	 * @throws IOException

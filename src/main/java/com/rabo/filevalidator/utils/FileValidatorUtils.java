@@ -22,9 +22,10 @@ import com.rabo.filevalidator.dto.CustomerAccounts;
 public class FileValidatorUtils {
 
 	/**
-	 * Validating the customer account info and return the failure customer list
+	 * Validating the customer account information and return the failure customer
+	 * list based on the validation
 	 * 
-	 * @param paramList
+	 * @param customerAccountList
 	 * @return
 	 */
 	public static List<CustomerAccounts> validateCustomerRecords(List<CustomerAccounts> customerAccountList) {

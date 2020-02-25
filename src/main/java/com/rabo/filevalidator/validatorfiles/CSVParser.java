@@ -73,7 +73,7 @@ public class CSVParser extends CustomerFileParser {
 	 * this function accepts the string of array and check weather the elements are
 	 * null or not
 	 * 
-	 * @param array
+	 * @param value
 	 * @return true or false
 	 */
 	public boolean nullCheck(String[] value) {

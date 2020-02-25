@@ -15,7 +15,7 @@ public class FileOperationsFactory extends BaseFileOperations {
 	 * the corresponding instances accordingly from the fileMapObject. this is the
 	 * implementation of factory pattern method
 	 * 
-	 * @param strFileFile
+	 * @param fileTypeObj
 	 * 
 	 */
 	public Object getFileInstance(FILE_TYPE fileTypeObj) {
