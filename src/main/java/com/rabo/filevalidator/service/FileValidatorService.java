@@ -1,6 +1,7 @@
 package com.rabo.filevalidator.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -33,7 +34,8 @@ public class FileValidatorService {
 
 	@Autowired
 	private FileOperationsFactory fileFactory;
-	List<CustomerAccounts> filteredCustomerList;
+
+	private List<CustomerAccounts> filteredCustomerList;
 
 	/**
 	 * this function gets the file factory instance of csv and loads the customer
@@ -79,6 +81,7 @@ public class FileValidatorService {
 	 */
 	public List<CustomerAccounts> processCustomerFiles(MultipartFile customerFile)
 			throws CustomerFileNotFoundException, IOException {
+		filteredCustomerList = new ArrayList<CustomerAccounts>();
 		String filename = StringUtils.cleanPath(customerFile.getOriginalFilename());
 
 		if (filename.endsWith(FileValidatorConstants.FILE_TYPE_CSV)

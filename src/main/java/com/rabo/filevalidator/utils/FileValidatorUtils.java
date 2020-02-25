@@ -71,7 +71,6 @@ public class FileValidatorUtils {
 			return "";
 		}
 		int i = customerFile.lastIndexOf('.');
-		String ext = i > 0 ? customerFile.substring(i + 1) : "";
-		return ext;
+		return i > 0 ? customerFile.substring(i + 1) : "";
 	}
 }
