@@ -57,7 +57,8 @@ public class FileValidatorControllerTest {
 	public void testWithCSVFileContent() throws Exception {
 		when(raboService.processCustomerFiles(Mockito.any())).thenReturn(records);
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.csv", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.csv",
+				"multipart/form-data", is);
 		MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
 						.contentType(MediaType.MULTIPART_FORM_DATA))
@@ -72,7 +73,8 @@ public class FileValidatorControllerTest {
 	public void testWithXMLFileContent() throws Exception {
 		when(raboService.processCustomerFiles(Mockito.any())).thenReturn(records);
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.xml");
-		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.xml", "multipart/form-data", is);
+		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.xml",
+				"multipart/form-data", is);
 		MvcResult result = mockMvc
 				.perform(MockMvcRequestBuilders.fileUpload("/uploadCustomerFiles").file(mockMultipartFile)
 						.contentType(MediaType.MULTIPART_FORM_DATA))

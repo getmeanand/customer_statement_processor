@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
@@ -40,8 +39,6 @@ public class FileValidatorServiceTest {
 	@MockBean
 	CSVParser csvParser;
 
-	
-
 	@MockBean
 	private FileOperationsFactory fileFactory;
 
@@ -53,10 +50,10 @@ public class FileValidatorServiceTest {
 
 	List<CustomerAccounts> cusList = new ArrayList<CustomerAccounts>();
 	CustomerAccounts accounts = new CustomerAccounts();
+
 	@Before
 	public void setUp() {
 
-		
 		accounts.setAccountNumber("324ersdr");
 
 		cusList.add(accounts);
@@ -68,7 +65,6 @@ public class FileValidatorServiceTest {
 	public void testLoadAndProcessCSVFile() throws CustomerFileNotFoundException, IOException {
 
 		when(fileFactory.getFileInstance(FILE_TYPE.CSV)).thenReturn(new CSVFile());
-		
 
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("records.csv");
 		MockMultipartFile mockMultipartFile = new MockMultipartFile("customerFile", "records.csv",
