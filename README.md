@@ -11,7 +11,7 @@ There are two validations:
  4. Set your default port number
  5. Build the project.
  6. Run the project.
- 7. Hit the URL : POST :  http://localhost:8181/uploadCustomerFiles         
+ 7. Hit the URL in postman: POST :  http://localhost:8181/uploadCustomerFiles   (Multipart file import)      
  8. customer_statements_processor starts validating the user files(xml,csv file from the user input),and 
      process it. 
  9. Finally we will get a responce about the failured records. We can fetch it and dissplay the required fields in the UI.
