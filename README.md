@@ -24,6 +24,6 @@ There are two validations:
 1. Remove "Content-Type" from header tab.
 2. Navigate to Body tab and selet option "form-data"
 3. Add key as "customerFile" and value as "File".
-4. Chooose the customer input files and hit the below url
+4. Choose the customer input files and hit the below url
 	POST :  http://localhost:8181/uploadCustomerFiles    
 
